@@ -34,6 +34,37 @@ Includes **only** the Launcher executable.
 
 ---
 
+## ⚠️ Note for Linux & macOS Users
+
+Since I primarily develop on Windows, the Linux and macOS builds are currently **experimental and untested**. If you encounter any issues, please report them in the [Issues](../../issues) tab!
+
+### 🐧 Linux
+
+If the application does not start when double-clicked, you likely need to grant it execution permissions.
+
+1. Open your terminal in the folder where you extracted the file.
+2. Run the following command:
+```bash
+   chmod +x godot_rpg_creator_manager.x86_64
+```
+3. Try running it again.
+
+### 🍎 macOS
+
+The application is not digitally signed (Apple Developer ID), so macOS Gatekeeper will likely block it by default, claiming it is "damaged" or from an "unidentified developer".
+
+To open it:
+
+1. Right-click (or Control+Click) on the `.app` file.
+2. Select **Open** from the context menu.
+3. Click **Open** in the warning dialog that appears.
+
+If you still get a "File is damaged" error, open the Terminal and run:
+```bash
+xattr -cr "Godot RPG Creator manager.app"
+```
+
+
 ## ✨ Key Features
 
 * **Project Management:** View all your RPG projects in a clean interface. Sort by name, path, or last modified date.
