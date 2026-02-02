@@ -7,36 +7,38 @@ extends Node
 signal update_status(msg: String)
 signal update_error(msg: String)
 
-# CONFIGURACIÓN DEL REPO DEL MANAGER
 const MANAGER_REPO_OWNER: String = "newold3"
-const MANAGER_REPO_NAME: String = "Godot-RPG-Creator-Launcher" # Pon aquí el nombre real del repo del Manager
+const MANAGER_REPO_NAME: String = "godot-rpg-creator-manager"
 
-# CONSTANTES INTERNAS
 const TEMP_ZIP_PATH: String = "user://manager_update.zip"
 const TEMP_EXTRACT_PATH: String = "user://manager_temp_extract/"
 
-# REFERENCIA DE VERSIÓN ACTUAL (Hardcoded o desde ProjectSettings)
-# Sugerencia: Usa ProjectSettings.get_setting("application/config/version")
-var current_version: String = "0.85" 
+var current_version: String = "1.0" 
 
 var _http: HTTPRequest
 var _thread: Thread
 var _new_version_tag: String = ""
 
 func _ready() -> void:
-	# Intentar leer la versión desde la configuración del proyecto exportado
 	var proj_ver = ProjectSettings.get_setting("application/config/version")
 	if proj_ver: current_version = str(proj_ver)
 	
 	_http = HTTPRequest.new()
 	add_child(_http)
 	_http.request_completed.connect(_on_release_info_received)
+	
+	update_status.connect(func(_st): print(_st))
+	update_error.connect(func(_err): print(_err))
+	
+	call_deferred("check_updates")
 
 func check_updates() -> void:
 	update_status.emit("Checking for Manager updates...")
-	# Consultamos el endpoint de "Latest Release" de GitHub
 	var url = "https://api.github.com/repos/%s/%s/releases/latest" % [MANAGER_REPO_OWNER, MANAGER_REPO_NAME]
-	_http.request(url)
+	print(url)
+
+	var headers = ["User-Agent: Godot-RPG-Creator-Manager"]
+	_http.request(url, headers)
 
 func _on_release_info_received(_result: int, code: int, _headers: PackedStringArray, body: PackedByteArray) -> void:
 	if code != 200:
@@ -48,26 +50,21 @@ func _on_release_info_received(_result: int, code: int, _headers: PackedStringAr
 		update_error.emit("Invalid GitHub response")
 		return
 		
-	_new_version_tag = json["tag_name"] # Ej: "v0.85a" o "0.85a"
+	_new_version_tag = json["tag_name"]
 	
-	# Limpieza de strings para comparar (quitar la 'v' si existe)
 	var local_clean = current_version.replace("v", "")
 	var remote_clean = _new_version_tag.replace("v", "")
 	
 	if local_clean == remote_clean:
 		update_status.emit("Manager is up to date.")
-		# Opcional: Emitir señal de finalizar
 		return
 	
-	# --- LÓGICA DE ACTUALIZACIÓN ---
 	update_status.emit("New version found: %s. Downloading..." % _new_version_tag)
 	
-	# Buscar el asset ZIP en la respuesta JSON
 	var assets = json.get("assets", [])
 	var download_url = ""
 	
 	for asset in assets:
-		# Buscamos un zip. Puedes filtrar por nombre si subes varios archivos (ej: "Manager_Win.zip")
 		if asset["name"].ends_with(".zip"):
 			download_url = asset["browser_download_url"]
 			break
@@ -79,7 +76,6 @@ func _on_release_info_received(_result: int, code: int, _headers: PackedStringAr
 	_start_zip_download(download_url)
 
 func _start_zip_download(url: String) -> void:
-	# Desconectar señal anterior y reconectar a la de descarga
 	for sig in _http.request_completed.get_connections():
 		_http.request_completed.disconnect(sig.callable)
 	
@@ -133,18 +129,11 @@ func _threaded_extraction() -> void:
 func _create_and_run_bat() -> void:
 	update_status.emit("Restarting to apply updates...")
 	
-	# RUTAS GLOBALES PARA WINDOWS
 	var bat_path = ProjectSettings.globalize_path("user://manager_updater.bat")
 	var temp_folder_win = ProjectSettings.globalize_path(TEMP_EXTRACT_PATH).replace("/", "\\")
-	# Aquí está la clave: La carpeta donde está el EXE actual
+
 	var install_folder_win = OS.get_executable_path().get_base_dir().replace("/", "\\")
-	var exe_name = OS.get_executable_path().get_file() # Ej: "Manager.exe"
-	
-	# SCRIPT DE ACTUALIZACIÓN (.BAT)
-	# 1. Espera 3 segundos para que Godot se cierre.
-	# 2. Mueve todo lo descomprimido a la carpeta de instalación (sobrescribe el EXE).
-	# 3. Borra los temporales.
-	# 4. Vuelve a arrancar el Manager.
+	var exe_name = OS.get_executable_path().get_file() 
 	
 	var script = "@echo off\r\n"
 	script += "timeout /t 3 /nobreak > NUL\r\n"
@@ -152,10 +141,9 @@ func _create_and_run_bat() -> void:
 	script += 'rmdir /s /q "%s"\r\n' % temp_folder_win
 	script += 'del "%s"\r\n' % ProjectSettings.globalize_path(TEMP_ZIP_PATH).replace("/", "\\")
 	script += 'start "" "%s\\%s"\r\n' % [install_folder_win, exe_name]
-	script += '(goto) 2>nul & del "%~f0"' # Auto-borrado del bat
+	script += '(goto) 2>nul & del "%~f0"'
 	
 	FileAccess.open(bat_path, FileAccess.WRITE).store_string(script)
 	
-	# Ejecutar BAT y cerrar Manager
 	OS.create_process("cmd.exe", ["/c", bat_path])
 	get_tree().quit()

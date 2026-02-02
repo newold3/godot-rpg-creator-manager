@@ -498,9 +498,35 @@ func _on_overwrite_confirmed() -> void:
 
 
 func _start_creation_process(target: String) -> void:
-	var update = (online_template_version != "" and online_template_version != cached_template_version)
-	if not FileAccess.file_exists(CACHED_ZIP_PATH) or update:
+	var exe_dir = OS.get_executable_path().get_base_dir()
+	
+	if OS.get_name() == "macOS":
+		exe_dir = exe_dir.path_join("../../../")
+		
+	var local_bundled_path = exe_dir.path_join("template_master.zip")
+	
+	var cache_exists = FileAccess.file_exists(CACHED_ZIP_PATH)
+	var bundled_exists = FileAccess.file_exists(local_bundled_path)
+	
+	var update_needed = (online_template_version != "" and online_template_version != cached_template_version)
+
+	if not cache_exists and bundled_exists:
+		_show_overlay("Installing from local bundle...")
+		print(">> Offline bundle detected. Copying to user cache...")
+		
+		var err = DirAccess.copy_absolute(local_bundled_path, CACHED_ZIP_PATH)
+		
+		if err == OK:
+			_start_extraction_process(CACHED_ZIP_PATH, target)
+			return
+		else:
+			printerr("Error copying local bundle. Code: ", err)
+
+	# ----------------------------------------------
+
+	if not cache_exists or update_needed:
 		_start_download(target)
+		
 	else:
 		_start_extraction_process(CACHED_ZIP_PATH, target)
 

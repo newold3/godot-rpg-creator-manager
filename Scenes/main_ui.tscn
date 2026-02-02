@@ -3,6 +3,7 @@
 [ext_resource type="Theme" uid="uid://0m7236mpb6ti" path="res://Resources/main_theme.tres" id="1_f28it"]
 [ext_resource type="Script" uid="uid://cak8rcd2g7pq2" path="res://Scripts/main_ui.gd" id="1_gmh8u"]
 [ext_resource type="Texture2D" uid="uid://dgaevsp3alpim" path="res://icon.png" id="3_dcbcb"]
+[ext_resource type="Script" uid="uid://cxjyfn65j6r77" path="res://Scripts/manager_updater.gd" id="4_dcbcb"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbbry"]
 content_margin_left = 12.0
@@ -263,3 +264,11 @@ access = 2
 use_threads = true
 
 [node name="DownloadGist" type="HTTPRequest" parent="." unique_id=1744616715]
+
+[node name="ProjectName" type="Label" parent="." unique_id=733986400]
+layout_mode = 0
+theme_override_font_sizes/font_size = 22
+text = "Project Name"
+
+[node name="Node" type="Node" parent="." unique_id=520935377]
+script = ExtResource("4_dcbcb")
