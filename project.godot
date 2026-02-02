@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Godot RPG Creator Manager"
+config/version="1.0"
 run/main_scene="uid://bvokfaamk2r12"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://dgaevsp3alpim"

@@ -39,7 +39,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="MainUI" type="Control" unique_id=1488174709 node_paths=PackedStringArray("project_container", "btn_create", "btn_import", "btn_scan", "btn_edit", "btn_run", "btn_rename", "btn_duplicate", "btn_remove", "btn_patreon", "filter_control", "order_mode", "file_dialog", "http_downloader", "http_version_check", "version_label")]
+[node name="MainUI" type="Control" unique_id=1488174709 node_paths=PackedStringArray("project_container", "btn_create", "btn_import", "btn_scan", "btn_edit", "btn_run", "btn_rename", "btn_duplicate", "btn_remove", "btn_patreon", "filter_control", "order_mode", "updater", "file_dialog", "update_dialog", "http_downloader", "http_version_check")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,10 +60,11 @@ btn_remove = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContaine
 btn_patreon = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Patreon")
 filter_control = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/Filter")
 order_mode = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/OrderMode")
+updater = NodePath("Updater")
 file_dialog = NodePath("FileDialog")
+update_dialog = NodePath("ConfirmationDialog")
 http_downloader = NodePath("DownloadProject")
 http_version_check = NodePath("DownloadGist")
-version_label = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/CurrentVersion")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=394778699]
 layout_mode = 1
@@ -129,16 +130,16 @@ layout_mode = 2
 size_flags_horizontal = 2
 theme_override_colors/font_color = Color(0.3254902, 0.69411767, 1, 1)
 theme_override_font_sizes/font_size = 24
-text = "PROJECTS"
+text = "PROJECT MANAGER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CurrentVersion" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=806371161]
+[node name="EngineVersion" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=806371161]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(198, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
-text = "Last Version:"
+text = "Engine Version:"
 horizontal_alignment = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=84664641]
@@ -256,6 +257,16 @@ size_flags_vertical = 10
 mouse_default_cursor_shape = 2
 text = "🤍 PATREON"
 
+[node name="Control" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=602026370]
+layout_mode = 2
+
+[node name="ManagerVersion" type="Label" parent="MarginContainer/VBoxContainer/Control" unique_id=1418460222]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Manager version:"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="FileDialog" type="FileDialog" parent="." unique_id=983534497]
 force_native = true
 access = 2
@@ -265,10 +276,7 @@ use_threads = true
 
 [node name="DownloadGist" type="HTTPRequest" parent="." unique_id=1744616715]
 
-[node name="ProjectName" type="Label" parent="." unique_id=733986400]
-layout_mode = 0
-theme_override_font_sizes/font_size = 22
-text = "Project Name"
-
-[node name="Node" type="Node" parent="." unique_id=520935377]
+[node name="Updater" type="Node" parent="." unique_id=520935377]
 script = ExtResource("4_dcbcb")
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=541059503]

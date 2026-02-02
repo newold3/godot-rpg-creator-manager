@@ -41,12 +41,15 @@ enum OrderMode {LAST_EDITED, NAME, PATH}
 @export var btn_patreon: Button
 @export var filter_control: LineEdit
 @export var order_mode: OptionButton
+@export var updater: Node
 
 @export_group("Dialogs & Tools")
 @export var file_dialog: FileDialog
+@export var update_dialog: ConfirmationDialog
 @export var http_downloader: HTTPRequest
 @export var http_version_check: HTTPRequest
-@export var version_label: Label
+@export var engine_version_label: Label
+@export var manager_version_label: Label
 
 
 # ------------------------------------------------------------------------------
@@ -143,9 +146,29 @@ func _ready() -> void:
 			file_dialog.dir_selected.disconnect(_on_file_dialog_dir_selected)
 		file_dialog.dir_selected.connect(_on_file_dialog_dir_selected)
 	
+	if updater:
+		updater.update_available.connect(_on_new_version_found)
+		updater.check_updates()
+	
+	if update_dialog:
+		update_dialog.confirmed.connect(_on_update_confirmed)
+	
 	_load_launcher_data()
 	_update_sidebar_state()
 	_check_online_version()
+	_update_manager_version()
+
+
+func _on_new_version_found(version_tag: String) -> void:
+	update_dialog.title = "Update Available"
+	update_dialog.dialog_text = "A new version of the Manager (%s) is available.\nDo you want to update and restart now?" % version_tag
+	update_dialog.popup_centered()
+
+
+func _on_update_confirmed() -> void:
+	_show_overlay("Updating Manager...", "Please wait for restart")
+	
+	updater.perform_update()
 
 
 func _notification(what: int) -> void:
@@ -193,8 +216,12 @@ func _on_version_check_completed(result: int, response_code: int, _headers: Pack
 
 
 func _update_version_label(ver: String) -> void:
-	if version_label:
-		version_label.text = "Last Version: " + ver
+	if engine_version_label:
+		engine_version_label.text = "Engine Version: " + ver
+
+
+func _update_manager_version() -> void:
+	%ManagerVersion.text = "Manager version: " + ProjectSettings.get("application/config/version")
 
 
 # ------------------------------------------------------------------------------

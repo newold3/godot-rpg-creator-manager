@@ -2,10 +2,12 @@ class_name ManagerUpdater
 extends Node
 
 ## Auto-Updater for the Compiled Manager (EXE).
-## Checks GitHub Releases tags. If a new tag is found, downloads the ZIP asset and replaces the EXE.
+## Checks GitHub Releases. Emits 'update_available' if found.
+## Requires manual call to 'perform_update()' to proceed.
 
 signal update_status(msg: String)
 signal update_error(msg: String)
+signal update_available(new_version: String)
 
 const MANAGER_REPO_OWNER: String = "newold3"
 const MANAGER_REPO_NAME: String = "godot-rpg-creator-manager"
@@ -14,10 +16,10 @@ const TEMP_ZIP_PATH: String = "user://manager_update.zip"
 const TEMP_EXTRACT_PATH: String = "user://manager_temp_extract/"
 
 var current_version: String = "1.0" 
-
 var _http: HTTPRequest
 var _thread: Thread
 var _new_version_tag: String = ""
+var _pending_download_url: String = ""
 
 func _ready() -> void:
 	var proj_ver = ProjectSettings.get_setting("application/config/version")
@@ -27,16 +29,14 @@ func _ready() -> void:
 	add_child(_http)
 	_http.request_completed.connect(_on_release_info_received)
 	
-	update_status.connect(func(_st): print(_st))
-	update_error.connect(func(_err): print(_err))
-	
-	call_deferred("check_updates")
+	update_status.connect(func(m): print("[Updater] ", m))
+	update_error.connect(func(e): push_error("[Updater Error] " + e))
+
 
 func check_updates() -> void:
 	update_status.emit("Checking for Manager updates...")
 	var url = "https://api.github.com/repos/%s/%s/releases/latest" % [MANAGER_REPO_OWNER, MANAGER_REPO_NAME]
-	print(url)
-
+	
 	var headers = ["User-Agent: Godot-RPG-Creator-Manager"]
 	_http.request(url, headers)
 
@@ -59,21 +59,28 @@ func _on_release_info_received(_result: int, code: int, _headers: PackedStringAr
 		update_status.emit("Manager is up to date.")
 		return
 	
-	update_status.emit("New version found: %s. Downloading..." % _new_version_tag)
-	
 	var assets = json.get("assets", [])
-	var download_url = ""
+	_pending_download_url = ""
 	
 	for asset in assets:
 		if asset["name"].ends_with(".zip"):
-			download_url = asset["browser_download_url"]
+			_pending_download_url = asset["browser_download_url"]
 			break
 	
-	if download_url == "":
+	if _pending_download_url == "":
 		update_error.emit("No ZIP asset found in release.")
 		return
+
+	update_status.emit("Update found: " + _new_version_tag)
+	update_available.emit(_new_version_tag)
+
+func perform_update() -> void:
+	if _pending_download_url == "":
+		update_error.emit("No update URL available.")
+		return
 		
-	_start_zip_download(download_url)
+	update_status.emit("Downloading " + _new_version_tag + "...")
+	_start_zip_download(_pending_download_url)
 
 func _start_zip_download(url: String) -> void:
 	for sig in _http.request_completed.get_connections():
@@ -99,7 +106,7 @@ func _on_zip_downloaded(_result: int, code: int, _headers: PackedStringArray, bo
 
 func _threaded_extraction() -> void:
 	if DirAccess.dir_exists_absolute(TEMP_EXTRACT_PATH):
-		DirAccess.remove_absolute(TEMP_EXTRACT_PATH) # Limpieza previa
+		DirAccess.remove_absolute(TEMP_EXTRACT_PATH)
 	DirAccess.make_dir_recursive_absolute(TEMP_EXTRACT_PATH)
 	
 	var zip = ZIPReader.new()
@@ -109,14 +116,12 @@ func _threaded_extraction() -> void:
 		
 	var files = zip.get_files()
 	for path in files:
-		if path.ends_with("/"): continue # Ignorar carpetas vacías
+		if path.ends_with("/"): continue
 		
-		# Leer y escribir en carpeta temporal
 		var content = zip.read_file(path)
 		var dest_path = TEMP_EXTRACT_PATH.path_join(path)
-		
-		# Asegurar que existan subcarpetas
 		var base_dir = dest_path.get_base_dir()
+		
 		if not DirAccess.dir_exists_absolute(base_dir):
 			DirAccess.make_dir_recursive_absolute(base_dir)
 			
@@ -131,15 +136,15 @@ func _create_and_run_bat() -> void:
 	
 	var bat_path = ProjectSettings.globalize_path("user://manager_updater.bat")
 	var temp_folder_win = ProjectSettings.globalize_path(TEMP_EXTRACT_PATH).replace("/", "\\")
-
 	var install_folder_win = OS.get_executable_path().get_base_dir().replace("/", "\\")
-	var exe_name = OS.get_executable_path().get_file() 
+	var exe_name = OS.get_executable_path().get_file()
+	var zip_path = ProjectSettings.globalize_path(TEMP_ZIP_PATH).replace("/", "\\")
 	
 	var script = "@echo off\r\n"
-	script += "timeout /t 3 /nobreak > NUL\r\n"
+	script += "timeout /t 2 /nobreak > NUL\r\n"
 	script += 'xcopy "%s\\*" "%s" /Y /S /E /I /R /H\r\n' % [temp_folder_win, install_folder_win]
 	script += 'rmdir /s /q "%s"\r\n' % temp_folder_win
-	script += 'del "%s"\r\n' % ProjectSettings.globalize_path(TEMP_ZIP_PATH).replace("/", "\\")
+	script += 'del "%s"\r\n' % zip_path
 	script += 'start "" "%s\\%s"\r\n' % [install_folder_win, exe_name]
 	script += '(goto) 2>nul & del "%~f0"'
 	
