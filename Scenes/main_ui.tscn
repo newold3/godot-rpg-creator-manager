@@ -1,0 +1,265 @@
+[gd_scene format=3 uid="uid://bvokfaamk2r12"]
+
+[ext_resource type="Theme" uid="uid://0m7236mpb6ti" path="res://Resources/main_theme.tres" id="1_f28it"]
+[ext_resource type="Script" uid="uid://cak8rcd2g7pq2" path="res://Scripts/main_ui.gd" id="1_gmh8u"]
+[ext_resource type="Texture2D" uid="uid://dgaevsp3alpim" path="res://icon.png" id="3_dcbcb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tbbry"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_f28it"]
+content_margin_left = 4.0
+content_margin_top = 0.0
+content_margin_right = 4.0
+content_margin_bottom = 0.0
+color = Color(0.22382358, 0.22382358, 0.22382352, 1)
+grow_begin = 12.0
+grow_end = 12.0
+thickness = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dcbcb"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="MainUI" type="Control" unique_id=1488174709 node_paths=PackedStringArray("project_container", "btn_create", "btn_import", "btn_scan", "btn_edit", "btn_run", "btn_rename", "btn_duplicate", "btn_remove", "btn_patreon", "filter_control", "order_mode", "file_dialog", "http_downloader", "http_version_check", "version_label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_f28it")
+script = ExtResource("1_gmh8u")
+project_container = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer/ProjectContainer")
+btn_create = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/CreateProject")
+btn_import = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/importProject")
+btn_scan = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/ScanProjects")
+btn_edit = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Edit")
+btn_run = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Run")
+btn_rename = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Rename")
+btn_duplicate = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Duplicate")
+btn_remove = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Remove")
+btn_patreon = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Patreon")
+filter_control = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/Filter")
+order_mode = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/OrderMode")
+file_dialog = NodePath("FileDialog")
+http_downloader = NodePath("DownloadProject")
+http_version_check = NodePath("DownloadGist")
+version_label = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/CurrentVersion")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=394778699]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.078431375, 0.078431375, 0.078431375, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1339058634]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1382018871]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer" unique_id=220321570]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer" unique_id=796397331]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=772223099]
+custom_minimum_size = Vector2(58, 58)
+layout_mode = 2
+texture = ExtResource("3_dcbcb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=1742255435]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "GODOT RPG
+CREATOR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=694985267]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="TextureRect2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=376375020]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 6
+text = "🗂️"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/HBoxContainer" unique_id=2038086388]
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_colors/font_color = Color(0.3254902, 0.69411767, 1, 1)
+theme_override_font_sizes/font_size = 24
+text = "PROJECTS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CurrentVersion" type="Label" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer" unique_id=806371161]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(198, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Last Version:"
+horizontal_alignment = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=84664641]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_tbbry")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1363459376]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopMenu" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" unique_id=1532825983]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 12
+
+[node name="CreateProject" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1835698455]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "✚ CREATE"
+
+[node name="importProject" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1313743976]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "⬇︎ IMPORT"
+
+[node name="ScanProjects" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1110327515]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "⌕ SCAN	"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1384834689]
+layout_mode = 2
+text = "FILTER:"
+
+[node name="Filter" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1441828986]
+layout_mode = 2
+size_flags_horizontal = 3
+caret_blink = true
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=154750825]
+layout_mode = 2
+text = "ORDER:"
+
+[node name="OrderMode" type="OptionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=335417436]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+alignment = 1
+selected = 0
+item_count = 3
+popup/item_0/text = "Last Edited"
+popup/item_0/id = 0
+popup/item_1/text = "Name"
+popup/item_1/id = 1
+popup/item_2/text = "Path"
+popup/item_2/id = 2
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" unique_id=607251325]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_f28it")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer" unique_id=491410836]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=1412753512]
+layout_mode = 2
+size_flags_horizontal = 3
+follow_focus = true
+
+[node name="ProjectContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/ScrollContainer" unique_id=1793111688]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer" unique_id=231463466]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dcbcb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer" unique_id=566868127]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Edit" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=2133228659]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "✎ EDIT"
+
+[node name="Run" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1394255820]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "▷ RUN"
+
+[node name="Rename" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=114905556]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "I RENAME"
+
+[node name="Duplicate" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=2147417159]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "⧉ DUPLICATE"
+
+[node name="Remove" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1680860055]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "⌫ REMOVE"
+
+[node name="Patreon" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=323858269]
+layout_mode = 2
+size_flags_vertical = 10
+mouse_default_cursor_shape = 2
+text = "🤍 PATREON"
+
+[node name="FileDialog" type="FileDialog" parent="." unique_id=983534497]
+force_native = true
+access = 2
+
+[node name="DownloadProject" type="HTTPRequest" parent="." unique_id=5504953]
+use_threads = true
+
+[node name="DownloadGist" type="HTTPRequest" parent="." unique_id=1744616715]

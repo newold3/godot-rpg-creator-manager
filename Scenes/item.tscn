@@ -1,0 +1,101 @@
+[gd_scene format=3 uid="uid://db0mhmhj7cobb"]
+
+[ext_resource type="Script" uid="uid://cp21nom3jl7h7" path="res://Scripts/item.gd" id="1_76mu4"]
+[ext_resource type="Texture2D" uid="uid://dgaevsp3alpim" path="res://icon.png" id="1_ys0gr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_76mu4"]
+resource_local_to_scene = true
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.24985081, 0.24985072, 0.24985075, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 16
+
+[node name="Item" type="PanelContainer" unique_id=108483331]
+custom_minimum_size = Vector2(0, 80)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 105.0
+grow_horizontal = 2
+focus_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_76mu4")
+script = ExtResource("1_76mu4")
+selected_color = Color(0.1736469, 0.26163036, 0.24782637, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1162492779]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer" unique_id=193979810]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("1_ys0gr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1405727944]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ProjectName" type="Label" parent="HBoxContainer/VBoxContainer" unique_id=2137640596]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Project Name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer" unique_id=605866803]
+layout_mode = 2
+
+[node name="GridContainer" type="HFlowContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer" unique_id=336655781]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FolderButton" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer/GridContainer" unique_id=106501178]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "📁"
+flat = true
+
+[node name="ProjectPath" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/GridContainer" unique_id=1496721164]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.5641603, 0.5641599, 0.56416, 1)
+theme_override_font_sizes/font_size = 16
+text = "Project Path"
+text_overrun_behavior = 4
+
+[node name="ProjectVersion" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/GridContainer" unique_id=1195671417]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7987912, 0.7987913, 0.798791, 1)
+theme_override_font_sizes/font_size = 18
+text = "0.81"
+
+[node name="FileDate" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/GridContainer" unique_id=379192281]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(182, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5641603, 0.5641599, 0.56416, 1)
+theme_override_font_sizes/font_size = 16
+text = "1900 - 00 - 00 - 00:00:00"
+
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/GridContainer/FolderButton" to="." method="_on_folder_button_pressed"]
