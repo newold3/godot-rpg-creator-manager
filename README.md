@@ -9,7 +9,7 @@
 
 <p align="center"><img width="1158" height="660" alt="image" src="https://github.com/user-attachments/assets/fd7af548-e739-4c1a-bd00-a038c42f309b" /></p>
 
-This tool acts as a central "Hub" (similar to Unity Hub or the Epic Games Launcher or the godot Launcher) specifically designed for the **Godot RPG Creator** ecosystem. It allows you to download the latest version of the RPG engine, manage your existing projects, and keep everything updated automatically.
+This tool acts as a central "Hub" (similar to Unity Hub or the Epic Games Launcher or the Godot Launcher) specifically designed for the **Godot RPG Creator** ecosystem. It allows you to download the latest version of the RPG engine, manage your existing projects, and keep everything updated automatically.
 
 ---
 
