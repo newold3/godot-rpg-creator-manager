@@ -16,6 +16,7 @@ run/main_scene="uid://bvokfaamk2r12"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://dgaevsp3alpim"
 config/windows_native_icon="res://icon.ico"
+config/tags=PackedStringArray()
 
 [file_customization]
 
