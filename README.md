@@ -7,7 +7,9 @@
 
 **The official hub to create, manage, and launch your Godot RPG Creator projects.**
 
-This tool acts as a central "Hub" (similar to Unity Hub or the Epic Games Launcher or the godot Launcher) specifically designed for the **Godot RPG Creator** ecosystem. It allows you to download the latest version of the RPG engine, manage your existing projects, and keep everything updated automatically.
+<p align="center"><img width="1158" height="660" alt="image" src="https://github.com/user-attachments/assets/fd7af548-e739-4c1a-bd00-a038c42f309b" /></p>
+
+This tool acts as a central "Hub" (similar to Unity Hub or the Epic Games Launcher or the Godot Launcher) specifically designed for the **Godot RPG Creator** ecosystem. It allows you to download the latest version of the RPG engine, manage your existing projects, and keep everything updated automatically.
 
 ---
 
@@ -32,6 +34,37 @@ Includes **only** the Launcher executable.
 
 ---
 
+## ⚠️ Note for Linux & macOS Users
+
+Since I primarily develop on Windows, the Linux and macOS builds are currently **experimental and untested**. If you encounter any issues, please report them in the [Issues](../../issues) tab!
+
+### 🐧 Linux
+
+If the application does not start when double-clicked, you likely need to grant it execution permissions.
+
+1. Open your terminal in the folder where you extracted the file.
+2. Run the following command:
+```bash
+   chmod +x godot_rpg_creator_manager.x86_64
+```
+3. Try running it again.
+
+### 🍎 macOS
+
+The application is not digitally signed (Apple Developer ID), so macOS Gatekeeper will likely block it by default, claiming it is "damaged" or from an "unidentified developer".
+
+To open it:
+
+1. Right-click (or Control+Click) on the `.app` file.
+2. Select **Open** from the context menu.
+3. Click **Open** in the warning dialog that appears.
+
+If you still get a "File is damaged" error, open the Terminal and run:
+```bash
+xattr -cr "Godot RPG Creator manager.app"
+```
+
+
 ## ✨ Key Features
 
 * **Project Management:** View all your RPG projects in a clean interface. Sort by name, path, or last modified date.
@@ -39,7 +72,7 @@ Includes **only** the Launcher executable.
 * **One-Click Creation:** Automatically handles cloning, configuring, and preparing the base RPG template for you.
 * **Hybrid Update System:**
 	* **The Launcher:** Updates itself by detecting new releases on GitHub.
-	* **Your Projects:** Detects if your project is running on an older version of the RPG engine (Coming Soon).
+	* **Your Projects:** Detects if your project is running on an older version of the RPG engine and update it.
 * **Integrated Tools:** Rename, Duplicate, Remove (with Trash bin support), and Open in Editor.
 
 ---
@@ -47,7 +80,7 @@ Includes **only** the Launcher executable.
 ## 🛠️ How to Use
 
 1.  Unzip the downloaded file into a folder of your choice (e.g., `Desktop/GodotRPGCreator`).
-2.  Run `GodotRPGCreator.exe` (Windows) or the binary for your OS.
+2.  Run `godot_rpg_creator_manager.exe` (Windows) or the binary for your OS.
 3.  **To create a new game:**
 	* Click on **+ CREATE**.
 	* Select an empty folder.
