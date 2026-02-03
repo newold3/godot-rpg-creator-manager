@@ -36,7 +36,6 @@ func _ready() -> void:
 func check_updates() -> void:
 	update_status.emit("Checking for Manager updates...")
 	var url = "https://api.github.com/repos/%s/%s/releases/latest" % [MANAGER_REPO_OWNER, MANAGER_REPO_NAME]
-	
 	var headers = ["User-Agent: Godot-RPG-Creator-Manager"]
 	_http.request(url, headers)
 

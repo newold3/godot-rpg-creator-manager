@@ -17,11 +17,6 @@ config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://dgaevsp3alpim"
 config/windows_native_icon="res://icon.ico"
 
-[display]
-
-window/size/transparent=true
-window/per_pixel_transparency/allowed=true
-
 [file_customization]
 
 folder_colors={
@@ -36,3 +31,4 @@ folder_colors={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+textures/vram_compression/import_etc2_astc=true
