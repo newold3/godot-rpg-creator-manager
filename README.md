@@ -7,7 +7,8 @@
 
 **The official hub to create, manage, and launch your Godot RPG Creator projects.**
 
-<p align="center"><img width="1158" height="660" alt="image" src="https://github.com/user-attachments/assets/fd7af548-e739-4c1a-bd00-a038c42f309b" /></p>
+<p align="center"><img width="1145" height="644" alt="image" src="https://github.com/user-attachments/assets/61f0e6e5-6a7f-4945-b17b-16eb7cf34c21" />
+</p>
 
 This tool acts as a central "Hub" (similar to Unity Hub or the Epic Games Launcher or the Godot Launcher) specifically designed for the **Godot RPG Creator** ecosystem. It allows you to download the latest version of the RPG engine, manage your existing projects, and keep everything updated automatically.
 
