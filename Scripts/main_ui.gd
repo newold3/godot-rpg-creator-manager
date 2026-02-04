@@ -16,6 +16,8 @@ const EXTERNAL_DATA_FOLDER: String = "injected_data/"
 const TEMPLATE_URL: String = "https://github.com/newold3/Godot-RPG-Creator/archive/refs/heads/master.zip"
 const VERSION_CHECK_URL: String = "https://gist.githubusercontent.com/newold3/3ff01f9859cc46ae86b8eb5344cbb800/raw"
 
+var custom_engine_path: String = ""
+
 const PROJECT_ITEM_PATH: String = "res://Scenes/item.tscn"
 
 enum OrderMode {LAST_EDITED, NAME, PATH}
@@ -44,6 +46,7 @@ enum OrderMode {LAST_EDITED, NAME, PATH}
 @export var btn_duplicate: Button
 @export var btn_remove: Button
 @export var btn_patreon: Button
+@export var btn_settings: Button
 @export var filter_control: LineEdit
 @export var order_mode: OptionButton
 @export var updater: Node
@@ -131,6 +134,7 @@ func _ready() -> void:
 	if btn_duplicate: btn_duplicate.pressed.connect(_on_duplicate_pressed)
 	if btn_remove: btn_remove.pressed.connect(_on_remove_pressed)
 	if btn_patreon: btn_patreon.pressed.connect(_on_patreon_pressed)
+	if btn_settings: btn_settings.pressed.connect(_on_settings_pressed)
 	
 	if order_mode: 
 		order_mode.item_selected.connect(_on_mode_changed)
@@ -155,7 +159,11 @@ func _ready() -> void:
 	if file_dialog:
 		if file_dialog.dir_selected.is_connected(_on_file_dialog_dir_selected):
 			file_dialog.dir_selected.disconnect(_on_file_dialog_dir_selected)
+		if file_dialog.file_selected.is_connected(_on_file_dialog_file_selected):
+			file_dialog.file_selected.disconnect(_on_file_dialog_file_selected)
 		file_dialog.dir_selected.connect(_on_file_dialog_dir_selected)
+		file_dialog.file_selected.connect(_on_file_dialog_file_selected)
+		
 	
 	if updater:
 		updater.update_available.connect(_on_new_version_found)
@@ -439,6 +447,10 @@ func _update_sidebar_state() -> void:
 # ACTIONS
 # ------------------------------------------------------------------------------
 
+func _on_settings_pressed() -> void:
+	_open_engine_selection_dialog()
+
+
 func _on_create_pressed() -> void:
 	if file_dialog:
 		file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
@@ -465,14 +477,20 @@ func _on_scan_pressed() -> void:
 
 func _on_edit_pressed() -> void:
 	if not selected_project: return
-	var exe = OS.get_executable_path()
-	OS.create_process(exe, ["--path", selected_project.project_path, "-e"])
+	
+	var engine = _get_engine_executable_path()
+	if engine.is_empty(): return
+	
+	OS.create_process(engine, ["--path", selected_project.project_path, "-e"])
 
 
 func _on_run_pressed() -> void:
 	if not selected_project: return
-	var exe = OS.get_executable_path()
-	OS.create_process(exe, ["--path", selected_project.project_path])
+	
+	var engine = _get_engine_executable_path()
+	if engine.is_empty(): return
+	
+	OS.create_process(engine, ["--path", selected_project.project_path])
 
 
 func _on_patreon_pressed() -> void:
@@ -633,8 +651,8 @@ func _finalize_duplication(dest_path: String) -> void:
 	_refresh_ui_list()
 
 
-func _sanitize_folder_name(name: String) -> String:
-	var safe = name.strip_edges().replace(" ", "_")
+func _sanitize_folder_name(_name: String) -> String:
+	var safe = _name.strip_edges().replace(" ", "_")
 
 	var regex = RegEx.new()
 	regex.compile("[<>:\"/\\\\|?*]")
@@ -652,6 +670,14 @@ func _sanitize_folder_name(name: String) -> String:
 # ------------------------------------------------------------------------------
 # CREATION FLOW (HYBRID INSTALLER)
 # ------------------------------------------------------------------------------
+func _on_file_dialog_file_selected(path: String) -> void:
+	var act = file_dialog.get_meta("action", "")
+	if act == "select_engine":
+		custom_engine_path = path
+		_rename_settings_text()
+		_save_launcher_data()
+		print("Engine path updated: ", custom_engine_path)
+
 
 func _on_file_dialog_dir_selected(dir: String) -> void:
 	var act = file_dialog.get_meta("action", "")
@@ -906,6 +932,9 @@ func _load_launcher_data() -> void:
 				
 		cached_template_version = data.get("template_version", "0.0")
 		last_sel = data.get("last_selected_path", "")
+		
+		custom_engine_path = data.get("custom_engine_path", "")
+		_rename_settings_text()
 	
 	var list_dirty = false
 	
@@ -939,6 +968,25 @@ func _load_launcher_data() -> void:
 	_refresh_ui_list()
 
 
+func _rename_settings_text() -> void:
+	if not btn_settings: return
+	
+	if not custom_engine_path.is_empty():
+		btn_settings.text = "⚙️Godot executable: " + custom_engine_path
+	else:
+		var exe_dir = OS.get_executable_path().get_base_dir()
+		if OS.get_name() == "macOS":
+			exe_dir = exe_dir.path_join("../../../")
+			
+		var tools_path = exe_dir.path_join("tools/engine.exe")
+		if OS.get_name() == "Linux": tools_path = exe_dir.path_join("tools/engine.x86_64")
+		
+		if FileAccess.file_exists(tools_path):
+			btn_settings.text = "⚙️Godot executable: " + tools_path
+		else:
+			btn_settings.text = "⚙️Select Godot executable..."
+
+
 func _save_launcher_data() -> void:
 	var paths = []
 	for p in projects: paths.append(p.project_path)
@@ -950,7 +998,8 @@ func _save_launcher_data() -> void:
 		"window_size": [s.x, s.y],
 		"window_pos": [p.x, p.y],
 		"template_version": cached_template_version,
-		"last_selected_path": selected_project.project_path if selected_project else ""
+		"last_selected_path": selected_project.project_path if selected_project else "",
+		"custom_engine_path": custom_engine_path
 	}
 	var f = FileAccess.open(LAUNCHER_DATA_PATH, FileAccess.WRITE)
 	if f: f.store_string(JSON.stringify(d))
@@ -1039,3 +1088,47 @@ func _copy_dir_recursive(src: String, dst: String) -> void:
 				if d.current_is_dir(): _copy_dir_recursive(s_p, d_p)
 				else: d.copy(s_p, d_p)
 			f = d.get_next()
+
+
+# ------------------------------------------------------------------------------
+# ENGINE PATH LOGIC
+# ------------------------------------------------------------------------------
+
+
+func _get_engine_executable_path() -> String:
+	# 1. Priority: User defined path
+	if not custom_engine_path.is_empty():
+		if FileAccess.file_exists(custom_engine_path):
+			return custom_engine_path
+		else:
+			# Reset if file no longer exists
+			custom_engine_path = ""
+			_save_launcher_data()
+	
+	# 2. Priority: Bundled 'tools' folder (fallback)
+	var exe_dir = OS.get_executable_path().get_base_dir()
+	if OS.get_name() == "macOS":
+		exe_dir = exe_dir.path_join("../../../")
+		
+	var tools_path = exe_dir.path_join("tools/engine.exe")
+	if OS.get_name() == "Linux": tools_path = exe_dir.path_join("tools/engine.x86_64")
+	
+	if FileAccess.file_exists(tools_path):
+		return tools_path
+		
+	# 3. Fail state
+	OS.alert("No Godot Engine executable found.\nPlease select your Godot executable in the settings or place 'engine.exe' in a 'tools' folder next to this app.", "Engine Missing")
+	
+	# Trigger the selection dialog automatically if missing
+	_open_engine_selection_dialog()
+	return ""
+
+
+func _open_engine_selection_dialog() -> void:
+	if not file_dialog: return
+	
+	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	file_dialog.title = "Select Godot Engine Executable"
+	file_dialog.filters = ["*.exe ; Windows Executable", "*.x86_64 ; Linux Binary", "*.app ; macOS Bundle"]
+	file_dialog.set_meta("action", "select_engine")
+	file_dialog.popup_centered()

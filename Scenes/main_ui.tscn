@@ -40,7 +40,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="MainUI" type="Control" unique_id=1488174709 node_paths=PackedStringArray("project_container", "btn_create", "btn_import", "btn_scan", "btn_edit", "btn_run", "btn_rename", "btn_duplicate", "btn_remove", "btn_patreon", "filter_control", "order_mode", "updater", "file_dialog", "update_dialog", "http_downloader", "http_version_check", "engine_version_label", "manager_version_label")]
+[node name="MainUI" type="Control" unique_id=1488174709 node_paths=PackedStringArray("project_container", "btn_create", "btn_import", "btn_scan", "btn_edit", "btn_run", "btn_rename", "btn_duplicate", "btn_remove", "btn_patreon", "btn_settings", "filter_control", "order_mode", "updater", "file_dialog", "update_dialog", "http_downloader", "http_version_check", "engine_version_label", "manager_version_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,6 +60,7 @@ btn_rename = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContaine
 btn_duplicate = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Duplicate")
 btn_remove = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Remove")
 btn_patreon = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer/Patreon")
+btn_settings = NodePath("MarginContainer/VBoxContainer/Control/ManagerVersion/settings")
 filter_control = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/Filter")
 order_mode = NodePath("MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu/OrderMode")
 updater = NodePath("Updater")
@@ -271,6 +272,19 @@ theme_override_colors/font_color = Color(0.525894, 0.52589405, 0.525894, 1)
 text = "Manager version:"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="settings" type="Button" parent="MarginContainer/VBoxContainer/Control/ManagerVersion" unique_id=1328496027]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -4.0
+offset_right = 8.0
+offset_bottom = 4.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.4228823, 0.4228831, 0.42288238, 1)
+text = "⚙️Select Godot executable..."
+flat = true
 
 [node name="FileDialog" type="FileDialog" parent="." unique_id=983534497]
 force_native = true

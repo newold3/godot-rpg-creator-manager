@@ -16,7 +16,10 @@ run/main_scene="uid://bvokfaamk2r12"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://dgaevsp3alpim"
 config/windows_native_icon="res://icon.ico"
-config/tags=PackedStringArray()
+
+[audio]
+
+driver/driver="Dummy"
 
 [file_customization]
 
@@ -27,7 +30,8 @@ folder_colors={
 
 [physics]
 
-3d/physics_engine="Jolt Physics"
+2d/physics_engine="Dummy"
+3d/physics_engine="Dummy"
 
 [rendering]
 
