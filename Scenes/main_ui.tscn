@@ -258,7 +258,7 @@ text = "▷ RUN"
 layout_mode = 2
 tooltip_text = "Rename the selected project."
 mouse_default_cursor_shape = 2
-text = "I RENAME"
+text = "🖉 RENAME"
 
 [node name="Duplicate" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=2147417159]
 layout_mode = 2
