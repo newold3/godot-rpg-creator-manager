@@ -163,16 +163,23 @@ theme_override_constants/separation = 12
 
 [node name="CreateProject" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1835698455]
 layout_mode = 2
+tooltip_text = "Create a new project.
+This process may take more or less time depending
+on your computer, as it requires installing
+a large project with many assets."
 mouse_default_cursor_shape = 2
 text = "✚ CREATE"
 
 [node name="importProject" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1313743976]
 layout_mode = 2
+tooltip_text = "Import a valid project created with Godot RPG Creator."
 mouse_default_cursor_shape = 2
 text = "⬇︎ IMPORT"
 
 [node name="ScanProjects" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1110327515]
 layout_mode = 2
+tooltip_text = "Scan the selected folder and its subfolders to find
+all projects created with Godot RPG Creator."
 mouse_default_cursor_shape = 2
 text = "⌕ SCAN	"
 
@@ -183,6 +190,7 @@ text = "FILTER:"
 [node name="Filter" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=1441828986]
 layout_mode = 2
 size_flags_horizontal = 3
+tooltip_text = "Filter the project list using a text filter."
 caret_blink = true
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=154750825]
@@ -192,6 +200,7 @@ text = "ORDER:"
 [node name="OrderMode" type="OptionButton" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/TopMenu" unique_id=335417436]
 custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
+tooltip_text = "Sort the list by last edited project, by name, or by path."
 mouse_default_cursor_shape = 2
 alignment = 1
 selected = 0
@@ -233,32 +242,41 @@ theme_override_constants/separation = 12
 
 [node name="Edit" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=2133228659]
 layout_mode = 2
+tooltip_text = "Edit the selected project in the Godot editor.
+(requires the Godot executable to be configured in this file manager)"
 mouse_default_cursor_shape = 2
 text = "✎ EDIT"
 
 [node name="Run" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1394255820]
 layout_mode = 2
+tooltip_text = "Run the selected project.
+(requires the Godot executable to be configured in this file manager)"
 mouse_default_cursor_shape = 2
 text = "▷ RUN"
 
 [node name="Rename" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=114905556]
 layout_mode = 2
+tooltip_text = "Rename the selected project."
 mouse_default_cursor_shape = 2
 text = "I RENAME"
 
 [node name="Duplicate" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=2147417159]
 layout_mode = 2
+tooltip_text = "Duplicate the selected project."
 mouse_default_cursor_shape = 2
 text = "⧉ DUPLICATE"
 
 [node name="Remove" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=1680860055]
 layout_mode = 2
+tooltip_text = "Remove the selected project from the list.
+(optionally also allows deleting the project from the hard drive)"
 mouse_default_cursor_shape = 2
 text = "⌫ REMOVE"
 
 [node name="Patreon" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/PanelContainer/VBoxContainer" unique_id=323858269]
 layout_mode = 2
 size_flags_vertical = 10
+tooltip_text = "Do you like this project? You can support me on Patreon!"
 mouse_default_cursor_shape = 2
 text = "🤍 PATREON"
 
@@ -282,6 +300,9 @@ offset_top = -4.0
 offset_right = 8.0
 offset_bottom = 4.0
 grow_vertical = 2
+tooltip_text = "Location of the Godot executable
+to edit and preview projects."
+mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.4228823, 0.4228831, 0.42288238, 1)
 text = "⚙️Select Godot executable..."
 flat = true
