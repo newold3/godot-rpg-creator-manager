@@ -19,7 +19,7 @@ This tool acts as a central "Hub" (similar to Unity Hub or the Epic Games Launch
 To get started, head over to the **[Releases](../../releases)** page and download the version that best suits your needs:
 
 ### 📦 Option A: Full Offline Bundle (Recommended)
-> **Filename:** `RPG_Creator_Full_Offline.zip` (~258)
+> **Filename:** `RPG_Creator_Full_Offline.zip` (~258MB)
 
 Includes the Launcher **and** a local copy of the RPG Engine Template.
 * ✅ **Instant Installation:** No internet connection required to create your first project.
